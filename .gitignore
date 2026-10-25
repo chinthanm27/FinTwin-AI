@@ -1,0 +1,52 @@
+# ==========================================================
+# FinTwin AI - Git ignore rules
+# ==========================================================
+
+# --- Virtual environment ---
+venv/
+.venv/
+env/
+
+# --- Secrets / environment ---
+.env
+.env.*
+!.env.example
+
+# --- Python cache / build ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# --- Testing / coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- NiceGUI runtime storage (contains session data) ---
+.nicegui/
+
+# --- Trained ML models (regenerable, may encode user behaviour) ---
+trained_models/*
+!trained_models/.gitkeep
+
+# --- User uploads (private financial documents) ---
+app/uploads/*
+!app/uploads/.gitkeep
+
+# --- Datasets: never commit real/private financial data ---
+datasets/private/
+datasets/*.private.*
+
+# --- Logs ---
+*.log
+logs/
+
+# --- IDE / OS files ---
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+.DS_Store
