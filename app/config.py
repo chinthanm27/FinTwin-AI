@@ -107,11 +107,25 @@ class Settings:
         return self.max_upload_mb * 1024 * 1024
 
 
+def _resolve_host() -> str:
+    """APP_HOST wins. Otherwise, on a hosting platform (PORT is set) listen on all interfaces."""
+    explicit = _get_str("APP_HOST", "")
+    if explicit:
+        return explicit
+    return "0.0.0.0" if os.getenv("PORT") else "127.0.0.1"
+
+
+def _resolve_port() -> int:
+    """Hosting platforms (Render, Railway, Fly, Heroku...) provide PORT; it takes priority over APP_PORT."""
+    platform_port = _get_int("PORT", 0)
+    return platform_port if platform_port > 0 else _get_int("APP_PORT", 8080)
+
+
 settings = Settings(
     app_name=_get_str("APP_NAME", "FinTwin AI"),
     app_env=_get_str("APP_ENV", "development"),
-    host=_get_str("APP_HOST", "127.0.0.1"),
-    port=_get_int("APP_PORT", 8080),
+    host=_resolve_host(),
+    port=_resolve_port(),
     reload=_get_bool("APP_RELOAD", False),
     storage_secret=_get_str("STORAGE_SECRET", ""),
     mongo_uri=_get_str("MONGO_URI", "mongodb://localhost:27017"),
